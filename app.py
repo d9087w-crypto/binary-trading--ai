@@ -1,4 +1,4 @@
-import datetime
+ import datetime
 import random
 import time
 import streamlit as st
@@ -148,8 +148,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# SECRET VIP ACCESS PASSWORDS
-VALID_VIP_PASSWORDS = ["TANIXVIP", "VIP786", "PRO2026"]
+# YOUR VIP PASSWORDS
+VALID_VIP_PASSWORDS = ["TRADINGFUTURE2141", "TANIXVIP", "VIP786", "PRO2026"]
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
@@ -292,4 +292,4 @@ else:
                 '<div class="yellow-timer" style="color:#ff0055; border-color:#ff0055;">EXPIRED</div>',
                 unsafe_allow_html=True,
             )
-                
+            
