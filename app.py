@@ -234,10 +234,13 @@ else:
 
             st.session_state.accuracy = random.randint(55, 78)
 
-            now = datetime.datetime.now()
-            st.session_state.entry_time = now.strftime("%H:%M:%S")
+            # Indian Standard Time (IST = UTC + 5:30) Fix
+            ist_offset = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
+            now_ist = datetime.datetime.now(ist_offset)
+
+            st.session_state.entry_time = now_ist.strftime("%H:%M:%S")
             st.session_state.expiry_time = (
-                now + datetime.timedelta(seconds=60)
+                now_ist + datetime.timedelta(seconds=60)
             ).strftime("%H:%M:%S")
             st.session_state.expiry_timestamp = time.time() + 60
 
