@@ -1,4 +1,4 @@
-import datetime
+ import datetime
 import random
 import time
 import streamlit as st
@@ -386,7 +386,7 @@ else:
             )
         else:
             st.markdown(
-                 レ<div class="signal-call">CALL (BUY)</div>',
+                '<div class="signal-call">CALL (BUY)</div>',
                 unsafe_allow_html=True,
             )
             st.markdown(
@@ -421,4 +421,4 @@ else:
                     unsafe_allow_html=True,
                 )
                 break
-        
+            
