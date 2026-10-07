@@ -1,4 +1,4 @@
- import datetime
+import datetime
 import random
 import time
 import streamlit as st
@@ -54,7 +54,6 @@ st.markdown(
         box-shadow: 0 0 20px #00f2fe;
     }
 
-    /* Volatility Status Badges */
     .volatility-safe {
         background: rgba(0, 255, 136, 0.1);
         border: 1px solid #00ff88;
@@ -180,28 +179,12 @@ st.markdown(
         margin-top: 12px;
     }
 
-    /* Session Tracker Capsule Header */
-    .session-card {
-        background: rgba(7, 19, 40, 0.8);
-        border: 1px solid #00f2fe;
-        border-radius: 12px;
-        padding: 8px 10px;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        margin-bottom: 12px;
+    .user-badge {
+        text-align: center;
         font-size: 11px;
-        flex-wrap: nowrap;
-        white-space: nowrap;
-    }
-
-    .session-tag {
-        background: #d946ef;
-        color: #ffffff;
-        font-weight: bold;
-        padding: 2px 5px;
-        border-radius: 4px;
-        font-size: 10px;
+        color: #00f2fe;
+        margin-bottom: 8px;
+        letter-spacing: 1px;
     }
 
     [data-testid="stForm"] {
@@ -217,11 +200,6 @@ VALID_VIP_PASSWORDS = ["TRADINGFUTURE2141", "TANIXVIP", "VIP786", "PRO2026"]
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
-
-if "session_wins" not in st.session_state:
-    st.session_state.session_wins = 18
-if "session_losses" not in st.session_state:
-    st.session_state.session_losses = 3
 
 def generate_signal():
     all_pairs = [
@@ -261,7 +239,6 @@ def generate_signal():
     st.session_state.expiry_time = (now_ist + datetime.timedelta(seconds=60)).strftime("%H:%M:%S")
     st.session_state.expiry_timestamp = time.time() + 60
 
-# Page load hote hi default data ready rahega
 if "signal_type" not in st.session_state:
     generate_signal()
 
@@ -302,18 +279,8 @@ if not st.session_state.logged_in:
             st.rerun()
 
 else:
-    total_trades = st.session_state.session_wins + st.session_state.session_losses
-    win_rate = round((st.session_state.session_wins / total_trades) * 100, 1) if total_trades > 0 else 0
-
     st.markdown(
-        f"""
-        <div class="session-card">
-            <div><span class="session-tag">ID</span> <b style="color:#00f2fe;">{st.session_state.trader_id}</b></div>
-            <div>✅ <b>Wins:</b> <span style="color:#00ff88;">{st.session_state.session_wins}</span></div>
-            <div>❌ <b>Loss:</b> <span style="color:#ff0055;">{st.session_state.session_losses}</span></div>
-            <div>🎯 <b>WinRate:</b> <span style="color:#ffd700;">{win_rate}%</span></div>
-        </div>
-        """,
+        f'<div class="user-badge">🆔 TRADER ID: <b>{st.session_state.trader_id}</b></div>',
         unsafe_allow_html=True,
     )
 
@@ -322,11 +289,6 @@ else:
         status_box.info(f"🔗 Scanning market for ID ({st.session_state.trader_id})...")
         time.sleep(0.3)
         status_box.empty()
-
-        if random.random() > 0.15:
-            st.session_state.session_wins += 1
-        else:
-            st.session_state.session_losses += 1
 
         generate_signal()
 
@@ -398,4 +360,4 @@ else:
             '<div class="yellow-timer" style="color:#ff0055; border-color:#ff0055;">EXPIRED</div>',
             unsafe_allow_html=True,
     )
-    
+ 
