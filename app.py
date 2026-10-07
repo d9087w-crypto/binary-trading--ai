@@ -8,183 +8,192 @@ st.set_page_config(
     page_title="TANIX AI 2.0 PRO", page_icon="⚡", layout="centered"
 )
 
-# Custom Cyberpunk / Dark Cyan CSS UI
+# Custom Cyberpunk / Dark Cyan CSS UI matching screenshots exactly
 st.markdown(
     """
     <style>
     .stApp {
         background-color: #030a16;
         color: #00f2fe;
-        font-family: 'Courier New', Courier, monospace;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     
     .title-text {
         text-align: center;
         color: #00f2fe;
-        font-weight: 800;
-        font-size: 26px;
-        text-shadow: 0 0 10px #00f2fe, 0 0 20px #00f2fe;
+        font-weight: 900;
+        font-size: 24px;
+        text-shadow: 0 0 12px #00f2fe;
         letter-spacing: 2px;
-        margin-bottom: 12px;
+        margin-top: 5px;
+        margin-bottom: 10px;
     }
 
     div[data-baseweb="input"] {
         background-color: #071328 !important;
         border: 1px solid #00f2fe !important;
-        border-radius: 6px;
+        border-radius: 8px;
         color: #00f2fe !important;
     }
     
     div.stButton > button, div[data-testid="stFormSubmitButton"] > button {
         width: 100%;
-        background: linear-gradient(135deg, #071a38 0%, #0c2b5c 100%);
+        background: transparent !important;
         color: #00f2fe !important;
-        border: 1px solid #00f2fe !important;
-        padding: 10px;
+        border: 1.5px solid #00f2fe !important;
+        padding: 8px;
         font-weight: bold;
-        font-size: 15px;
+        font-size: 14px;
         letter-spacing: 1.5px;
         border-radius: 20px;
-        box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
         transition: all 0.3s ease;
-    }
-    div.stButton > button:hover, div[data-testid="stFormSubmitButton"] > button:hover {
-        background: #00f2fe !important;
-        color: #030a16 !important;
-        box-shadow: 0 0 20px #00f2fe;
     }
 
     .volatility-safe {
-        background: rgba(0, 255, 136, 0.1);
-        border: 1px solid #00ff88;
+        background: transparent;
+        border: 1.5px solid #00ff88;
         color: #00ff88;
         border-radius: 20px;
-        padding: 6px 12px;
+        padding: 8px 12px;
         text-align: center;
         font-size: 12px;
         font-weight: bold;
-        margin: 8px 0;
-        box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+        margin: 10px 0;
+        box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
     }
 
     .volatility-moderate {
-        background: rgba(0, 242, 254, 0.1);
-        border: 1px solid #00f2fe;
+        background: transparent;
+        border: 1.5px solid #00f2fe;
         color: #00f2fe;
         border-radius: 20px;
-        padding: 6px 12px;
+        padding: 8px 12px;
         text-align: center;
         font-size: 12px;
         font-weight: bold;
-        margin: 8px 0;
-        box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+        margin: 10px 0;
+        box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
     }
 
     .pair-card {
-        background: linear-gradient(145deg, #06142a 0%, #091f42 100%);
-        border: 1px solid #00f2fe;
-        border-radius: 10px;
-        padding: 12px;
+        background: transparent;
+        border: 1.5px solid #00f2fe;
+        border-radius: 12px;
+        padding: 14px;
         text-align: center;
-        font-size: 22px;
+        font-size: 24px;
         font-weight: bold;
         color: #ffffff;
-        margin-top: 8px;
+        margin-top: 10px;
+        box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
     }
 
     .signal-put {
-        background: rgba(255, 0, 85, 0.15);
-        border: 1.5px solid #ff0055;
+        background: transparent;
+        border: 2px solid #ff0055;
         color: #ff0055;
-        border-radius: 8px;
-        padding: 8px;
-        font-size: 24px;
+        border-radius: 12px;
+        padding: 12px;
+        font-size: 26px;
         font-weight: 900;
         text-align: center;
-        margin: 8px 0;
-        box-shadow: 0 0 12px #ff0055;
+        margin: 12px 0;
+        box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
     }
 
     .signal-call {
-        background: rgba(0, 255, 136, 0.15);
-        border: 1.5px solid #00ff88;
+        background: transparent;
+        border: 2px solid #00ff88;
         color: #00ff88;
-        border-radius: 8px;
-        padding: 8px;
-        font-size: 24px;
+        border-radius: 12px;
+        padding: 12px;
+        font-size: 26px;
         font-weight: 900;
         text-align: center;
-        margin: 8px 0;
-        box-shadow: 0 0 12px #00ff88;
+        margin: 12px 0;
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
     }
 
     .accuracy-box-put {
         text-align: center;
-        font-size: 26px;
+        font-size: 28px;
         font-weight: bold;
         color: #ff0055;
         border: 2px solid #ff0055;
         border-radius: 50%;
-        width: 90px;
-        height: 90px;
-        line-height: 86px;
-        margin: 10px auto;
-        box-shadow: 0 0 12px #ff0055;
+        width: 110px;
+        height: 110px;
+        line-height: 106px;
+        margin: 15px auto;
+        box-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
     }
 
     .accuracy-box-call {
         text-align: center;
-        font-size: 26px;
+        font-size: 28px;
         font-weight: bold;
         color: #00ff88;
         border: 2px solid #00ff88;
         border-radius: 50%;
-        width: 90px;
-        height: 90px;
-        line-height: 86px;
-        margin: 10px auto;
-        box-shadow: 0 0 12px #00ff88;
+        width: 110px;
+        height: 110px;
+        line-height: 106px;
+        margin: 15px auto;
+        box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
     }
 
     .strategy-info {
-        background: #071328;
-        border-left: 3px solid #00f2fe;
-        border-radius: 0 4px 4px 0;
-        padding: 8px;
-        margin: 8px 0;
-        font-size: 12px;
+        background: #041226;
+        border-left: 4px solid #00f2fe;
+        border-radius: 0 6px 6px 0;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 11px;
         color: #00f2fe;
+        font-weight: 600;
     }
 
     .trend-meter {
-        background: #091a34;
-        border: 1px solid #00f2fe;
-        border-radius: 15px;
-        padding: 6px;
+        background: transparent;
+        border: 1.5px solid #00f2fe;
+        border-radius: 20px;
+        padding: 8px;
         text-align: center;
         font-size: 12px;
         font-weight: bold;
-        margin-top: 6px;
+        margin-top: 8px;
+        box-shadow: 0 0 8px rgba(0, 242, 254, 0.2);
     }
 
     .yellow-timer {
-        background: #111a03;
+        background: transparent;
         border: 1.5px solid #ffd700;
         color: #ffd700;
         border-radius: 8px;
         padding: 8px;
         text-align: center;
-        font-size: 22px;
+        font-size: 20px;
         font-weight: bold;
         margin-top: 12px;
     }
 
     .user-badge {
         text-align: center;
-        font-size: 11px;
+        font-size: 12px;
         color: #00f2fe;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
         letter-spacing: 1px;
+    }
+
+    .id-tag {
+        background: #e000ff;
+        color: #ffffff;
+        font-size: 10px;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: bold;
+        margin-right: 4px;
     }
 
     [data-testid="stForm"] {
@@ -272,92 +281,5 @@ if not st.session_state.logged_in:
         if len(tid) == 0:
             st.error("❌ Please enter a Trader ID.")
         elif vkey not in VALID_VIP_PASSWORDS:
-            st.error("❌ Invalid Password/Key! Contact Admin for VIP Access.")
-        else:
-            st.session_state.logged_in = True
-            st.session_state.trader_id = tid
-            st.rerun()
-
-else:
-    st.markdown(
-        f'<div class="user-badge">🆔 TRADER ID: <b>{st.session_state.trader_id}</b></div>',
-        unsafe_allow_html=True,
-    )
-
-    if st.button("◆ SCAN MARKET"):
-        status_box = st.empty()
-        status_box.info(f"🔗 Scanning market for ID ({st.session_state.trader_id})...")
-        time.sleep(0.3)
-        status_box.empty()
-
-        generate_signal()
-
-    if st.session_state.volatility_type == "safe":
-        st.markdown(
-            f'<div class="volatility-safe">{st.session_state.volatility_text}</div>',
-            unsafe_allow_html=True,
-        )
-    else:
-        st.markdown(
-            f'<div class="volatility-moderate">{st.session_state.volatility_text}</div>',
-            unsafe_allow_html=True,
-        )
-
-    st.markdown(
-        f'<div class="pair-card">{st.session_state.current_pair}</div>',
-        unsafe_allow_html=True,
-    )
-
-    st.markdown(
-        f'<div class="strategy-info"><b>STRATEGY USED:</b> {st.session_state.selected_strategy}</div>',
-        unsafe_allow_html=True,
-    )
-
-    st.markdown(
-        f'<div class="trend-meter">{st.session_state.trend_status}</div>',
-        unsafe_allow_html=True,
-    )
-
-    if "PUT" in st.session_state.signal_type:
-        st.markdown(
-            '<div class="signal-put">PUT (SELL)</div>',
-            unsafe_allow_html=True,
-        )
-        st.markdown(
-            f'<div class="accuracy-box-put">{st.session_state.accuracy}%</div>',
-            unsafe_allow_html=True,
-        )
-    else:
-        st.markdown(
-            '<div class="signal-call">CALL (BUY)</div>',
-            unsafe_allow_html=True,
-        )
-        st.markdown(
-            f'<div class="accuracy-box-call">{st.session_state.accuracy}%</div>',
-            unsafe_allow_html=True,
-        )
-
-    st.markdown(
-        f"""
-    <div style="font-size: 11px; color: #7a9bbd; margin-top: 6px; text-align: center;">
-        <span><b>Entry:</b> {st.session_state.entry_time}</span> &nbsp;|&nbsp; 
-        <span><b>Expiry:</b> {st.session_state.expiry_time}</span>
-    </div>
-    """,
-        unsafe_allow_html=True,
-    )
-
-    timer_placeholder = st.empty()
-    remaining_sec = int(st.session_state.expiry_timestamp - time.time())
-    
-    if remaining_sec > 0:
-        timer_placeholder.markdown(
-            f'<div class="yellow-timer">⏱️ 00:{remaining_sec:02d}</div>',
-            unsafe_allow_html=True,
-        )
-    else:
-        timer_placeholder.markdown(
-            '<div class="yellow-timer" style="color:#ff0055; border-color:#ff0055;">EXPIRED</div>',
-            unsafe_allow_html=True,
-    )
- 
+            st.error("❌ Invalid Password/Key! Contact Admin for VIP Access
+                     
