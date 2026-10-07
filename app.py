@@ -3,19 +3,17 @@ import random
 import time
 import streamlit as st
 
-# Page setup
 st.set_page_config(
     page_title="TANIX AI 2.0 PRO", page_icon="⚡", layout="centered"
 )
 
-# Custom Cyberpunk / Dark Cyan CSS UI matching screenshots exactly
 st.markdown(
     """
     <style>
     .stApp {
         background-color: #030a16;
         color: #00f2fe;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-family: system-ui, -apple-system, sans-serif;
     }
     
     .title-text {
@@ -47,7 +45,6 @@ st.markdown(
         letter-spacing: 1.5px;
         border-radius: 20px;
         box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
-        transition: all 0.3s ease;
     }
 
     .volatility-safe {
@@ -228,8 +225,8 @@ def generate_signal():
     st.session_state.accuracy = random.randint(89, 97)
 
     volatility_states = [
-        ("🟢 GREEN: SAFE MARKET — TRADE KARO (High Accuracy)", "safe"),
-        ("⚡ MODERATE VOLATILITY — CAUTION", "moderate")
+        ("GREEN: SAFE MARKET - TRADE KARO (High Accuracy)", "safe"),
+        ("MODERATE VOLATILITY - CAUTION", "moderate")
     ]
     vol_text, vol_type = random.choice(volatility_states)
     st.session_state.volatility_text = vol_text
@@ -237,10 +234,10 @@ def generate_signal():
 
     if "CALL" in st.session_state.signal_type:
         buyers = random.randint(82, 94)
-        st.session_state.trend_status = f"🟢 STRONG UPTREND (Buyers: {buyers}%)"
+        st.session_state.trend_status = f"STRONG UPTREND (Buyers: {buyers}%)"
     else:
         sellers = random.randint(82, 94)
-        st.session_state.trend_status = f"🔴 STRONG DOWNTREND (Sellers: {sellers}%)"
+        st.session_state.trend_status = f"STRONG DOWNTREND (Sellers: {sellers}%)"
 
     ist_offset = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
     now_ist = datetime.datetime.now(ist_offset)
@@ -252,7 +249,7 @@ if "signal_type" not in st.session_state:
     generate_signal()
 
 st.markdown(
-    '<div class="title-text">⬢ TANIX AI 2.0 PRO</div>', unsafe_allow_html=True
+    '<div class="title-text">TANIX AI 2.0 PRO</div>', unsafe_allow_html=True
 )
 
 if not st.session_state.logged_in:
@@ -263,23 +260,105 @@ if not st.session_state.logged_in:
 
     with st.form("login_form", clear_on_submit=False):
         trader_id_input = st.text_input(
-            "Trader ID", placeholder="[id:// Enter Trader ID]", label_visibility="collapsed"
+            "Trader ID", placeholder="Enter Trader ID", label_visibility="collapsed"
         )
         vip_key_input = st.text_input(
             "VIP Key",
             type="password",
-            placeholder="[key:// Enter Secret Password Key]",
+            placeholder="Enter Secret Password Key",
             label_visibility="collapsed",
         )
 
-        submit_login = st.form_submit_button("◆ ACCESS SYSTEM")
+        submit_login = st.form_submit_button("ACCESS SYSTEM")
 
     if submit_login:
         tid = trader_id_input.strip() if trader_id_input else ""
         vkey = vip_key_input.strip() if vip_key_input else ""
 
         if len(tid) == 0:
-            st.error("❌ Please enter a Trader ID.")
+            st.error("Please enter a Trader ID.")
         elif vkey not in VALID_VIP_PASSWORDS:
-            st.error("❌ Invalid Password/Key! Contact Admin for VIP Access
-                     
+            st.error("Invalid Password/Key! Contact Admin for VIP Access.")
+        else:
+            st.session_state.logged_in = True
+            st.session_state.trader_id = tid
+            st.rerun()
+
+else:
+    st.markdown(
+        f'<div class="user-badge"><span class="id-tag">ID</span> TRADER ID: <b>{st.session_state.trader_id}</b></div>',
+        unsafe_allow_html=True,
+    )
+
+    if st.button("SCAN MARKET"):
+        generate_signal()
+
+    if st.session_state.volatility_type == "safe":
+        st.markdown(
+            f'<div class="volatility-safe">{st.session_state.volatility_text}</div>',
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            f'<div class="volatility-moderate">{st.session_state.volatility_text}</div>',
+            unsafe_allow_html=True,
+        )
+
+    st.markdown(
+        f'<div class="pair-card">{st.session_state.current_pair}</div>',
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        f'<div class="strategy-info">STRATEGY USED: {st.session_state.selected_strategy}</div>',
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        f'<div class="trend-meter">{st.session_state.trend_status}</div>',
+        unsafe_allow_html=True,
+    )
+
+    if "PUT" in st.session_state.signal_type:
+        st.markdown(
+            '<div class="signal-put">PUT (SELL)</div>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f'<div class="accuracy-box-put">{st.session_state.accuracy}%</div>',
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            '<div class="signal-call">CALL (BUY)</div>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f'<div class="accuracy-box-call">{st.session_state.accuracy}%</div>',
+            unsafe_allow_html=True,
+        )
+
+    st.markdown(
+        f"""
+    <div style="font-size: 11px; color: #7a9bbd; margin-top: 6px; text-align: center;">
+        <span><b>Entry:</b> {st.session_state.entry_time}</span> &nbsp;|&nbsp; 
+        <span><b>Expiry:</b> {st.session_state.expiry_time}</span>
+    </div>
+    """,
+        unsafe_allow_html=True,
+    )
+
+    timer_placeholder = st.empty()
+    remaining_sec = int(st.session_state.expiry_timestamp - time.time())
+    
+    if remaining_sec > 0:
+        timer_placeholder.markdown(
+            f'<div class="yellow-timer">00:{remaining_sec:02d}</div>',
+            unsafe_allow_html=True,
+        )
+    else:
+        timer_placeholder.markdown(
+            '<div class="yellow-timer" style="color:#ff0055; border-color:#ff0055;">EXPIRED</div>',
+            unsafe_allow_html=True,
+        )
+        
