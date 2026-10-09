@@ -351,7 +351,7 @@ else:
         )
     else:
         st.markdown(
-            <div class="signal-call">CALL (BUY)</div>,
+            '<div class="signal-call">CALL (BUY)</div>',
             unsafe_allow_html=True,
         )
         st.markdown(
@@ -381,5 +381,5 @@ else:
         timer_placeholder.markdown(
             '<div class="yellow-timer" style="color:#ff0055; border-color:#ff0055;">EXPIRED</div>',
             unsafe_allow_html=True,
-                )
+        )
         
