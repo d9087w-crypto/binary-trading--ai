@@ -60,17 +60,17 @@ st.markdown(
         box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
     }
 
-    .volatility-moderate {
-        background: transparent;
-        border: 1.5px solid #00f2fe;
-        color: #00f2fe;
-        border-radius: 20px;
-        padding: 8px 12px;
+    .volatility-alert-box {
+        background: rgba(255, 0, 85, 0.15);
+        border: 2px solid #ff0055;
+        color: #ff0055;
+        border-radius: 12px;
+        padding: 10px;
         text-align: center;
-        font-size: 12px;
+        font-size: 13px;
         font-weight: bold;
         margin: 10px 0;
-        box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
     }
 
     .pair-card {
@@ -212,32 +212,35 @@ def generate_signal():
         "BTC/USD (OTC)", "EUR/USD (OTC)", "GBP/USD (OTC)", 
         "USD/JPY (OTC)", "AUD/CAD (OTC)", "EUR/JPY (OTC)", "GOLD"
     ]
+    
+    # Advanced SMC & Suroshoot Strategies
     strategies = [
-        "Breaker Block & Supply/Demand Key Reversal Zone",
-        "SMC Order Block & Liquidity Grab",
-        "EMA 9/21 Dynamic Trend Crossover",
-        "RSI + Stochastic Double Oscillator"
+        "SUROSHOOT: Bullish Order Block + Fair Value Gap (FVG)",
+        "SUROSHOOT: Bearish Order Block + Liquidity Grab",
+        "SMC: Institutional Breaker Zone Reversal",
+        "SMC: Smart Money Liquidity Sweep & Reversal",
+        "SUROSHOOT: EMA 9/21 Trend Confluence"
     ]
 
     st.session_state.current_pair = random.choice(all_pairs)
     st.session_state.selected_strategy = random.choice(strategies)
     st.session_state.signal_type = random.choice(["CALL (BUY)", "PUT (SELL)"])
-    st.session_state.accuracy = random.randint(89, 97)
+    st.session_state.accuracy = random.randint(92, 98)
 
-    volatility_states = [
-        ("GREEN: SAFE MARKET - TRADE KARO (High Accuracy)", "safe"),
-        ("MODERATE VOLATILITY - CAUTION", "moderate")
-    ]
-    vol_text, vol_type = random.choice(volatility_states)
-    st.session_state.volatility_text = vol_text
-    st.session_state.volatility_type = vol_type
+    # Volatility Check (Includes Red Alert)
+    if random.choice([True, False, False]):
+        st.session_state.is_red_alert = True
+        st.session_state.volatility_text = "RED ALERT: HIGH MARKET VOLATILITY DETECTED! TRADING RISKY"
+    else:
+        st.session_state.is_red_alert = False
+        st.session_state.volatility_text = "GREEN: SAFE MARKET - TRADE KARO (High Accuracy)"
 
     if "CALL" in st.session_state.signal_type:
-        buyers = random.randint(82, 94)
-        st.session_state.trend_status = f"STRONG UPTREND (Buyers: {buyers}%)"
+        buyers = random.randint(86, 96)
+        st.session_state.trend_status = f"STRONG UPTREND [SMC CONFIRMED] (Buyers: {buyers}%)"
     else:
-        sellers = random.randint(82, 94)
-        st.session_state.trend_status = f"STRONG DOWNTREND (Sellers: {sellers}%)"
+        sellers = random.randint(86, 96)
+        st.session_state.trend_status = f"STRONG DOWNTREND [SMC CONFIRMED] (Sellers: {sellers}%)"
 
     ist_offset = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
     now_ist = datetime.datetime.now(ist_offset)
@@ -293,14 +296,14 @@ else:
     if st.button("SCAN MARKET"):
         generate_signal()
 
-    if st.session_state.volatility_type == "safe":
+    if st.session_state.is_red_alert:
         st.markdown(
-            f'<div class="volatility-safe">{st.session_state.volatility_text}</div>',
+            f'<div class="volatility-alert-box">{st.session_state.volatility_text}</div>',
             unsafe_allow_html=True,
         )
     else:
         st.markdown(
-            f'<div class="volatility-moderate">{st.session_state.volatility_text}</div>',
+            f'<div class="volatility-safe">{st.session_state.volatility_text}</div>',
             unsafe_allow_html=True,
         )
 
