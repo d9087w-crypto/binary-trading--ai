@@ -221,7 +221,6 @@ def generate_signal():
         "BITCOIN-OTC",
     ]
 
-    # Integrated ALL 4 Sureshot Strategies
     sureshot_strategies = [
         "SS1: Engulfing Momentum + Head/Tail Wick Confirmation (Clear Space)",
         "SS2: 4-Candle Zig-Zag Alternating Breakout (Trend Aligned)",
@@ -234,7 +233,6 @@ def generate_signal():
     st.session_state.signal_type = random.choice(["CALL (BUY)", "PUT (SELL)"])
     st.session_state.accuracy = random.randint(94, 98)
 
-    # Volatility Check System
     if random.choice([True, False, False]):
         st.session_state.is_red_alert = True
         st.session_state.volatility_text = (
@@ -274,5 +272,114 @@ st.markdown(
 )
 
 if not st.session_state.logged_in:
+    st.markdown(
+        "<p style='text-align:center; color:#00f2fe; font-size:12px;'>MULTI-STRATEGY VIP ACCESS ALGORITHM</p>",
+        unsafe_allow_html=True,
+    )
 
-    
+    with st.form("login_form", clear_on_submit=False):
+        trader_id_input = st.text_input(
+            "Trader ID",
+            placeholder="Enter Trader ID",
+            label_visibility="collapsed",
+        )
+        vip_key_input = st.text_input(
+            "VIP Key",
+            type="password",
+            placeholder="Enter Secret Password Key",
+            label_visibility="collapsed",
+        )
+
+        submit_login = st.form_submit_button("ACCESS SYSTEM")
+
+    if submit_login:
+        tid = trader_id_input.strip() if trader_id_input else ""
+        vkey = vip_key_input.strip() if vip_key_input else ""
+
+        if len(tid) == 0:
+            st.error("Please enter a Trader ID.")
+        elif vkey not in VALID_VIP_PASSWORDS:
+            st.error("Invalid Password/Key! Contact Admin for VIP Access.")
+        else:
+            st.session_state.logged_in = True
+            st.session_state.trader_id = tid
+            st.rerun()
+
+else:
+    st.markdown(
+        f'<div class="user-badge"><span class="id-tag">ID</span> TRADER ID: <b>{st.session_state.trader_id}</b></div>',
+        unsafe_allow_html=True,
+    )
+
+    if st.button("SCAN MARKET"):
+        generate_signal()
+
+    if st.session_state.is_red_alert:
+        st.markdown(
+            f'<div class="volatility-alert-box">{st.session_state.volatility_text}</div>',
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            f'<div class="volatility-safe">{st.session_state.volatility_text}</div>',
+            unsafe_allow_html=True,
+        )
+
+    st.markdown(
+        f'<div class="pair-card">{st.session_state.current_pair}</div>',
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        f'<div class="strategy-info">STRATEGY: {st.session_state.selected_strategy}</div>',
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        f'<div class="trend-meter">{st.session_state.trend_status}</div>',
+        unsafe_allow_html=True,
+    )
+
+    if "PUT" in st.session_state.signal_type:
+        st.markdown(
+            '<div class="signal-put">PUT (SELL)</div>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f'<div class="accuracy-box-put">{st.session_state.accuracy}%</div>',
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            <div class="signal-call">CALL (BUY)</div>,
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f'<div class="accuracy-box-call">{st.session_state.accuracy}%</div>',
+            unsafe_allow_html=True,
+        )
+
+    st.markdown(
+        f"""
+    <div style="font-size: 11px; color: #7a9bbd; margin-top: 6px; text-align: center;">
+        <span><b>Entry:</b> {st.session_state.entry_time}</span> &nbsp;|&nbsp; 
+        <span><b>Expiry:</b> {st.session_state.expiry_time}</span>
+    </div>
+    """,
+        unsafe_allow_html=True,
+    )
+
+    timer_placeholder = st.empty()
+    remaining_sec = int(st.session_state.expiry_timestamp - time.time())
+
+    if remaining_sec > 0:
+        timer_placeholder.markdown(
+            f'<div class="yellow-timer">00:{remaining_sec:02d}</div>',
+            unsafe_allow_html=True,
+        )
+    else:
+        timer_placeholder.markdown(
+            '<div class="yellow-timer" style="color:#ff0055; border-color:#ff0055;">EXPIRED</div>',
+            unsafe_allow_html=True,
+                )
+        
