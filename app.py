@@ -245,7 +245,6 @@ def generate_signal():
         "BITCOIN-OTC",
     ]
 
-    # Master Sureshot Strategies (Including Marubozu 50% Midpoint, Mini SNR, Engulfing & Safety Margin)
     sureshot_strategies = [
         (
             "SS1: Marubozu 50% Midpoint Retest + Safety Margin Buffer",
@@ -395,7 +394,7 @@ else:
             '<div class="signal-call">CALL (BUY)</div>',
             unsafe_allow_html=True,
         )
-            st.markdown(
+        st.markdown(
             f'<div class="accuracy-box-call">{st.session_state.accuracy}%</div>',
             unsafe_allow_html=True,
         )
