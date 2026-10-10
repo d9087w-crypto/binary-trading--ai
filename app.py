@@ -283,7 +283,6 @@ def generate_signal():
     now_ist = datetime.datetime.now(ist_offset)
     st.session_state.entry_time = now_ist.strftime("%H:%M:%S")
     
-    # Accurate 60-second binary expiry calculation matching current minute cycle
     current_sec = now_ist.second
     remaining_to_minute = 60 - current_sec
     st.session_state.expiry_time = (
@@ -397,15 +396,21 @@ else:
         unsafe_allow_html=True,
     )
 
-    remaining_sec = int(st.session_state.expiry_timestamp - time.time())
-    if remaining_sec > 0:
-        st.markdown(
-            f'<div class="yellow-timer">00:{remaining_sec:02d}</div>',
-            unsafe_allow_html=True,
-        )
-    else:
-        st.markdown(
-            '<div class="yellow-timer" style="color:#ff0055; border-color:#ff0055;">EXPIRED / NEW CANDLE</div>',
-            unsafe_allow_html=True,
-        )
+    # Live ticking dynamic countdown container
+    timer_container = st.empty()
+
+    for _ in range(65):
+        remaining_sec = int(st.session_state.expiry_timestamp - time.time())
+        if remaining_sec > 0:
+            timer_container.markdown(
+                f'<div class="yellow-timer">00:{remaining_sec:02d}</div>',
+                unsafe_allow_html=True,
+            )
+            time.sleep(1)
+        else:
+            timer_container.markdown(
+                '<div class="yellow-timer" style="color:#ff0055; border-color:#ff0055;">EXPIRED / NEW CANDLE</div>',
+                unsafe_allow_html=True,
+            )
+            break
         
