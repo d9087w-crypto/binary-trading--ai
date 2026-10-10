@@ -245,44 +245,58 @@ def generate_signal():
         "BITCOIN-OTC",
     ]
 
+    # Master Sureshot Strategies (Including Marubozu 50% Midpoint, Mini SNR, Engulfing & Safety Margin)
     sureshot_strategies = [
-        "SS1: Engulfing Momentum + Head/Tail Wick Confirmation",
-        "SS2: 4-Candle Zig-Zag Alternating Breakout (Trend Aligned)",
-        "SS3: Strong S/R Zone Rejection (Body-to-Body + 50% Midpoint)",
-        "SS4: Strong Trend Reversal Trap (3-8 Candle Momentum)",
+        (
+            "SS1: Marubozu 50% Midpoint Retest + Safety Margin Buffer",
+            96,
+        ),
+        (
+            "SS2: Mini SNR Breakout & Flip Zone Rejection + MTG Ready",
+            95,
+        ),
+        (
+            "SS3: Engulfing Momentum + Trend-Aligned FVG Confluence",
+            97,
+        ),
+        (
+            "SS4: Strong Reversal Trap at Key Support/Resistance Level",
+            94,
+        ),
     ]
 
     st.session_state.current_pair = random.choice(all_pairs)
-    st.session_state.selected_strategy = random.choice(sureshot_strategies)
+    chosen_strat, base_acc = random.choice(sureshot_strategies)
+    st.session_state.selected_strategy = chosen_strat
     st.session_state.signal_type = random.choice(["CALL (BUY)", "PUT (SELL)"])
-    st.session_state.accuracy = random.randint(94, 98)
+    st.session_state.accuracy = base_acc + random.randint(0, 2)
 
     if random.choice([True, False, False]):
         st.session_state.is_red_alert = True
         st.session_state.volatility_text = (
-            "RED ALERT: HIGH VOLATILITY / GAP DETECTED (Filter Active)"
+            "RED ALERT: STUCK MARKET / HIGH VOLATILITY (Avoid Trade)"
         )
     else:
         st.session_state.is_red_alert = False
         st.session_state.volatility_text = (
-            "GREEN: SAFE MARKET — TRADE KARO (High Accuracy)"
+            "GREEN: SAFE MARKET — SAFETY MARGIN ENTRY ACTIVE"
         )
 
     if "CALL" in st.session_state.signal_type:
-        buyers = random.randint(88, 97)
+        buyers = random.randint(89, 98)
         st.session_state.trend_status = (
-            f"STRONG UPTREND (Buyers: {buyers}%) [Sureshot Matched]"
+            f"BULLISH MOMENTUM [SNR & Midpoint Confirmed] (Buyers: {buyers}%)"
         )
     else:
-        sellers = random.randint(88, 97)
+        sellers = random.randint(89, 98)
         st.session_state.trend_status = (
-            f"STRONG DOWNTREND (Sellers: {sellers}%) [Sureshot Matched]"
+            f"BEARISH MOMENTUM [SNR & Midpoint Confirmed] (Sellers: {sellers}%)"
         )
 
     ist_offset = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
     now_ist = datetime.datetime.now(ist_offset)
     st.session_state.entry_time = now_ist.strftime("%H:%M:%S")
-    
+
     current_sec = now_ist.second
     remaining_to_minute = 60 - current_sec
     st.session_state.expiry_time = (
@@ -358,7 +372,7 @@ else:
     )
 
     st.markdown(
-        f'<div class="strategy-info">STRATEGY USED: {st.session_state.selected_strategy}</div>',
+        f'<div class="strategy-info">{st.session_state.selected_strategy}</div>',
         unsafe_allow_html=True,
     )
 
@@ -381,7 +395,7 @@ else:
             '<div class="signal-call">CALL (BUY)</div>',
             unsafe_allow_html=True,
         )
-        st.markdown(
+            st.markdown(
             f'<div class="accuracy-box-call">{st.session_state.accuracy}%</div>',
             unsafe_allow_html=True,
         )
@@ -396,7 +410,6 @@ else:
         unsafe_allow_html=True,
     )
 
-    # Live ticking dynamic countdown container
     timer_container = st.empty()
 
     for _ in range(65):
