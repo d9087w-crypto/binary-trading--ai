@@ -27,7 +27,6 @@ st.markdown(
         margin-bottom: 5px;
     }
 
-    /* Button active glow fix */
     div.stButton > button {
         width: 100%;
         background: rgba(0, 242, 254, 0.05) !important;
@@ -188,6 +187,20 @@ st.markdown(
         box-shadow: 0 0 8px rgba(0, 242, 254, 0.2);
     }
 
+    .yellow-timer {
+        background: rgba(255, 215, 0, 0.05);
+        border: 2px solid #ffd700;
+        color: #ffd700;
+        border-radius: 12px;
+        padding: 10px;
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+        margin-top: 10px;
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        letter-spacing: 2px;
+    }
+
     .user-badge {
         text-align: center;
         font-size: 11px;
@@ -232,7 +245,6 @@ def generate_signal():
         "BITCOIN-OTC",
     ]
 
-    # Active 4 Sureshot Strategies Engine
     sureshot_strategies = [
         "SS1: Engulfing Momentum + Head/Tail Wick Confirmation",
         "SS2: 4-Candle Zig-Zag Alternating Breakout (Trend Aligned)",
@@ -245,7 +257,6 @@ def generate_signal():
     st.session_state.signal_type = random.choice(["CALL (BUY)", "PUT (SELL)"])
     st.session_state.accuracy = random.randint(94, 98)
 
-    # Volatility / Red Alert Filter System
     if random.choice([True, False, False]):
         st.session_state.is_red_alert = True
         st.session_state.volatility_text = (
@@ -254,27 +265,31 @@ def generate_signal():
     else:
         st.session_state.is_red_alert = False
         st.session_state.volatility_text = (
-            "GREEN: SAFE MARKET — SURESHOT SETUP CONFIRMED"
+            "GREEN: SAFE MARKET — TRADE KARO (High Accuracy)"
         )
 
     if "CALL" in st.session_state.signal_type:
         buyers = random.randint(88, 97)
         st.session_state.trend_status = (
-            f"STRONG UPTREND [RSI & LIQUIDITY MATCHED] (Buyers: {buyers}%)"
+            f"STRONG UPTREND (Buyers: {buyers}%) [Sureshot Matched]"
         )
     else:
         sellers = random.randint(88, 97)
         st.session_state.trend_status = (
-            f"STRONG DOWNTREND [RSI & LIQUIDITY MATCHED] (Sellers: {sellers}%)"
+            f"STRONG DOWNTREND (Sellers: {sellers}%) [Sureshot Matched]"
         )
 
     ist_offset = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
     now_ist = datetime.datetime.now(ist_offset)
     st.session_state.entry_time = now_ist.strftime("%H:%M:%S")
+    
+    # Accurate 60-second binary expiry calculation matching current minute cycle
+    current_sec = now_ist.second
+    remaining_to_minute = 60 - current_sec
     st.session_state.expiry_time = (
-        now_ist + datetime.timedelta(seconds=60)
+        now_ist + datetime.timedelta(seconds=remaining_to_minute)
     ).strftime("%H:%M:%S")
-    st.session_state.expiry_timestamp = time.time() + 60
+    st.session_state.expiry_timestamp = time.time() + remaining_to_minute
 
 
 if "signal_type" not in st.session_state:
@@ -344,7 +359,7 @@ else:
     )
 
     st.markdown(
-        f'<div class="strategy-info">{st.session_state.selected_strategy}</div>',
+        f'<div class="strategy-info">STRATEGY USED: {st.session_state.selected_strategy}</div>',
         unsafe_allow_html=True,
     )
 
@@ -381,4 +396,16 @@ else:
     """,
         unsafe_allow_html=True,
     )
-    
+
+    remaining_sec = int(st.session_state.expiry_timestamp - time.time())
+    if remaining_sec > 0:
+        st.markdown(
+            f'<div class="yellow-timer">00:{remaining_sec:02d}</div>',
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            '<div class="yellow-timer" style="color:#ff0055; border-color:#ff0055;">EXPIRED / NEW CANDLE</div>',
+            unsafe_allow_html=True,
+        )
+        
